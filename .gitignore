@@ -39,3 +39,8 @@ Spellbook.app/
 *.mov
 *.mp4
 *.avi
+
+# Development and project files
+CLAUDE.md
+LICENSE
+product_requirements.txt
