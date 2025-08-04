@@ -2,6 +2,8 @@
 
 macOS menu bar app for quick access to text prompts.
 
+https://github.com/user-attachments/assets/9a8ac178-bf33-4d31-92f5-c8b72aa515a8
+
 <video width="600" autoplay muted loop>
   <source src="https://github.com/user-attachments/assets/9a8ac178-bf33-4d31-92f5-c8b72aa515a8" type="video/mp4">
   Your browser does not support the video tag.
