@@ -2,16 +2,13 @@
 
 macOS menu bar app for quick access to text prompts.
 
-<video width="600" autoplay muted loop>
-  <source src="https://github.com/pasmikh/spellbook/releases/download/v1.0/spellbook_video.mov" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+![spellbook_demo](https://github.com/user-attachments/assets/9f5c6185-1318-4b08-9afa-099ff64f117d)
 
 ## How to Use
 
 - **Copy**: Click any prompt to copy to clipboard.
 - **Add** First line from clipboard becomes prompt name, other lines become content.
-- **Replace**: Shift+click prompt to replace with clipboard content (✏️ appears when unlocked).
+- **Replace**: Shift+click prompt to replace with clipboard content.
 - **Delete**: Cmd+click prompt/folder to delete
 - **Lock**: Click lock button to disable editing. Click unlock to enable editing.
 - **Storage**: Prompts saved to `~/Documents/prompts.data`
