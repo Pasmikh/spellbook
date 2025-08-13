@@ -4,7 +4,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var statusBarItem: NSStatusItem!
     let menu = NSMenu()
     var nodes: [Node] = []
-    var isLocked = false
     var modifierTimer: Timer?
     var lastModifierFlags: NSEvent.ModifierFlags = []
     
@@ -47,10 +46,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         
         menu.addItem(NSMenuItem.separator())
-        
-        let lockMenuItem = NSMenuItem(title: isLocked ? "Unlock" : "Lock", action: #selector(toggleLock), keyEquivalent: "")
-        lockMenuItem.target = self
-        menu.addItem(lockMenuItem)
         
         let addPromptMenuItem = NSMenuItem(title: "Add Prompt", action: #selector(addPrompt), keyEquivalent: "")
         addPromptMenuItem.target = self
@@ -117,10 +112,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             baseName = truncateString(folder.name, maxLength: 25)
         }
         
-        if isLocked {
-            return baseName
-        }
-        
         let flags = NSEvent.modifierFlags
         if flags.contains(.command) {
             return "🗑 \(baseName)"
@@ -179,9 +170,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let currentEvent = NSApp.currentEvent
         let flags = currentEvent?.modifierFlags ?? NSEvent.modifierFlags
         
-        if !isLocked && flags.contains(.command) {
+        if flags.contains(.command) {
             deleteNode(with: prompt.id)
-        } else if !isLocked && flags.contains(.shift) {
+        } else if flags.contains(.shift) {
             replacePrompt(with: prompt.id)
         } else {
             copyPrompt(prompt)
@@ -194,7 +185,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let currentEvent = NSApp.currentEvent
         let flags = currentEvent?.modifierFlags ?? NSEvent.modifierFlags
         
-        if !isLocked && flags.contains(.command) {
+        if flags.contains(.command) {
             deleteNode(with: folder.id)
         }
     }
@@ -255,11 +246,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             saveNodes()
             constructMenu()
         }
-    }
-    
-    @objc func toggleLock() {
-        isLocked.toggle()
-        constructMenu()
     }
     
     @objc func addPrompt() {
