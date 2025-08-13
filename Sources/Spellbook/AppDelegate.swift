@@ -187,6 +187,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         if flags.contains(.command) {
             deleteNode(with: folder.id)
+        } else {
+            copyAllPromptsFromFolder(folder)
         }
     }
     
@@ -194,6 +196,39 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let pasteboard = NSPasteboard.general
         pasteboard.clearContents()
         pasteboard.setString(prompt.content, forType: .string)
+    }
+    
+    func collectAllPrompts(from folder: Folder, basePath: String = "") -> [(path: String, prompt: Prompt)] {
+        var allPrompts: [(path: String, prompt: Prompt)] = []
+        let currentPath = basePath.isEmpty ? folder.name : "\(basePath)/\(folder.name)"
+        
+        for child in folder.children {
+            switch child {
+            case .prompt(let prompt):
+                allPrompts.append((path: currentPath, prompt: prompt))
+            case .folder(let childFolder):
+                allPrompts.append(contentsOf: collectAllPrompts(from: childFolder, basePath: currentPath))
+            }
+        }
+        
+        return allPrompts
+    }
+    
+    func copyAllPromptsFromFolder(_ folder: Folder) {
+        let allPrompts = collectAllPrompts(from: folder)
+        
+        if allPrompts.isEmpty {
+            return
+        }
+        
+        let formattedContent = allPrompts.map { promptInfo in
+            let header = "=== \(promptInfo.path)/\(promptInfo.prompt.name) ==="
+            return "\(header)\n\(promptInfo.prompt.content)"
+        }.joined(separator: "\n\n")
+        
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.setString(formattedContent, forType: .string)
     }
     
     func deleteNode(with id: UUID, from nodes: inout [Node]) -> Bool {
