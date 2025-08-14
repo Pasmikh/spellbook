@@ -221,7 +221,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             return
         }
         
-        let formattedContent = allPrompts.map { promptInfo in
+        // Sort prompts alphabetically by name
+        let sortedPrompts = allPrompts.sorted { $0.prompt.name < $1.prompt.name }
+        
+        let formattedContent = sortedPrompts.map { promptInfo in
             let header = "=== \(promptInfo.path)/\(promptInfo.prompt.name) ==="
             return "\(header)\n\(promptInfo.prompt.content)"
         }.joined(separator: "\n\n")
